@@ -1,9 +1,12 @@
 /**
  * Contenu bilingue de la page.
  *
- * Transcrit mot pour mot depuis le design source (`Portfolio Ethan Huot.dc.html`) :
- * ponctuation, accents, espaces insécables typographiques et séparateurs `·`
- * sont volontairement conservés tels quels.
+ * Repris du design source (`Portfolio Ethan Huot.dc.html`), puis relu et
+ * réécrit là où la formulation sonnait générée : tricolons décoratifs, tournures
+ * de brochure, et en anglais un mélange de formes contractées et pleines.
+ * Les deux langues sont maintenues en miroir : toute reformulation d'une clé
+ * doit être portée dans l'autre langue au même moment. Côté typographie, on
+ * garde l'apostrophe droite `'` et le séparateur `·`.
  */
 
 export type Lang = "fr" | "en";
@@ -92,7 +95,7 @@ export const COPY: Record<Lang, Copy> = {
     metaTitle:
       "Ethan Huot — Plateformes pour jeux de société et jeux de cartes",
     metaDescription:
-      "Développeur full-stack indépendant, basé à La Rochelle. Tournois, boutiques, back-offices, applications mobiles — du premier écran à la mise en production.",
+      "Développeur full-stack indépendant, basé à La Rochelle. Tournois, boutiques, back-offices, applications mobiles, de la maquette jusqu'à la mise en production.",
     skipLink: "Aller au contenu",
     navLabel: "Navigation principale",
     langLabel: "Langue du site",
@@ -107,7 +110,7 @@ export const COPY: Record<Lang, Copy> = {
     heroMark: "jeux de société",
     hero3: "et jeux de cartes à collectionner.",
     heroSub:
-      "Développeur full-stack indépendant, basé à La Rochelle. Tournois, boutiques, back-offices, applications mobiles — du premier écran à la mise en production.",
+      "Développeur full-stack indépendant, basé à La Rochelle. Tournois, boutiques, back-offices, applications mobiles, de la maquette jusqu'à la mise en production.",
     emailCta: "Écrivez-moi",
     workCta: "Voir les travaux",
     cdiChip: "Également ouvert à un poste en CDI.",
@@ -140,12 +143,12 @@ export const COPY: Record<Lang, Copy> = {
     services: [
       {
         title: "Plateforme de jeu",
-        body: "Moteur de tournois, boutique, back-office, application mobile. Conçue, développée, livrée.",
+        body: "Moteur de tournois, boutique, back-office, application mobile. Appariements et classements compris, avec un back-office que vos organisateurs peuvent tenir seuls.",
         price: "dès 4 000 €",
       },
       {
-        title: "Conseil & accompagnement",
-        body: "Cadrage technique, choix d'architecture, revue de code, montée en compétence de votre équipe.",
+        title: "Conseil technique",
+        body: "Cadrage technique, choix d'architecture, revue de code, et le temps qu'il faut avec votre équipe pour qu'elle prenne le relais.",
         price: "750 € / jour",
       },
       {
@@ -197,7 +200,7 @@ export const COPY: Record<Lang, Copy> = {
       {
         n: "2",
         title: "On construit",
-        body: "Livraison par tranches. Vous voyez le produit tourner chaque semaine, pas seulement à la fin.",
+        body: "Je livre par tranches. Vous voyez le produit tourner chaque semaine, pas seulement à la fin.",
       },
       {
         n: "3",
@@ -208,25 +211,25 @@ export const COPY: Record<Lang, Copy> = {
     // Le design source annonçait « Chaque projet mène à une page détaillée » ;
     // ces pages n'existent pas. La promesse est ramenée à ce qui est vrai.
     worksNote:
-      "Le problème, ce que j'ai construit, ce que ça a changé : détails et captures d'écran sur demande.",
+      "Sur demande, je reprends n'importe lequel en détail : d'où on partait, ce que j'ai construit, et ce que ça a donné une fois en ligne. Captures à l'appui.",
     aboutBody:
-      "Je connais les règles du jeu : classements, appariements, decks, collections, éditions limitées. C'est ce qui change tout quand il faut construire la plateforme qui va autour. Peu de projets à la fois, une seule personne à qui parler, et du code que votre équipe pourra reprendre.",
+      "Je connais les règles du jeu : classements, appariements, decks, collections, éditions limitées. Vous n'aurez pas à m'expliquer pourquoi un système suisse n'est pas une élimination directe. Je prends peu de projets à la fois, vous n'avez qu'une seule personne à qui parler, et le code reste lisible pour l'équipe qui le reprendra.",
     contactLine: "Dites-moi ce que vous voulez construire.",
     contactNote:
-      "Réponse sous 24 h ouvrées. Un premier appel de 30 minutes, sans engagement.",
+      "Je réponds sous 24 h ouvrées. Le premier appel dure 30 minutes et n'engage à rien.",
     cvLink: "Télécharger le CV",
     nfMetaTitle: "Page introuvable — Ethan Huot",
     nfLabel: "Erreur 404",
-    nfTitle: "Cette page n’existe pas.",
-    nfBody: "Le lien est peut-être ancien, ou l’adresse comporte une faute.",
-    nfHome: "Retour à l’accueil",
+    nfTitle: "Cette page n'existe pas.",
+    nfBody: "Le lien est peut-être ancien, ou l'adresse comporte une faute.",
+    nfHome: "Retour à l'accueil",
     nfOther: "English version",
   },
   en: {
     langName: "English",
     metaTitle: "Ethan Huot — Platforms for board games and trading card games",
     metaDescription:
-      "Independent full-stack developer, based in La Rochelle, France. Tournaments, shops, back-offices, mobile apps — from the first screen to production.",
+      "Independent full-stack developer, based in La Rochelle, France. Tournaments, shops, back-offices, mobile apps, from the mockup through to production.",
     skipLink: "Skip to content",
     navLabel: "Main navigation",
     langLabel: "Site language",
@@ -241,8 +244,8 @@ export const COPY: Record<Lang, Copy> = {
     heroMark: "board games",
     hero3: "and trading card games.",
     heroSub:
-      "Independent full-stack developer, based in La Rochelle, France. Tournaments, shops, back-offices, mobile apps — from the first screen to production.",
-    emailCta: "Get in touch",
+      "Independent full-stack developer, based in La Rochelle, France. Tournaments, shops, back-offices, mobile apps, from the mockup through to production.",
+    emailCta: "Email me",
     workCta: "See the work",
     cdiChip: "Also open to a full-time role.",
     proofKicker: "High-traffic platforms delivered for",
@@ -255,16 +258,16 @@ export const COPY: Record<Lang, Copy> = {
       "3 years' experience · Project lead & full-stack developer · Laravel / Next.js / Expo",
     doorsLabel: "Two doors",
     doorALabel: "You have a project",
-    doorATitle: "Build something",
+    doorATitle: "Get it built",
     doorABody:
       "A site, an app, a product to ship. Quote and schedule within 48 hours.",
     doorALink: "contact@opaza.fr",
-    doorBLabel: "You are hiring",
+    doorBLabel: "You're hiring",
     doorBTitle: "Join a team",
     doorBBody:
-      "I am also open to a full-time full-stack or mobile role, in France or remote.",
+      "I'm also open to a full-time full-stack or mobile role, in France or remote.",
     doorBLink: "See my résumé",
-    doorBLinkAlt: "Get in touch",
+    doorBLinkAlt: "Email me",
     doorBSubject: "Role opportunity",
     s1Label: "Services",
     s2Label: "Work",
@@ -274,17 +277,17 @@ export const COPY: Record<Lang, Copy> = {
     services: [
       {
         title: "Game platform",
-        body: "Tournament engine, shop, back-office, mobile app. Scoped, built, delivered.",
+        body: "Tournament engine, shop, back-office, mobile app. Pairings and standings included, with a back-office your organisers can run on their own.",
         price: "from €4,000",
       },
       {
-        title: "Consulting",
-        body: "Technical scoping, architecture decisions, code review, levelling up your team.",
+        title: "Technical consulting",
+        body: "Technical scoping, architecture decisions, code review, and however much time your team needs to take it over.",
         price: "€750 / day",
       },
       {
         title: "Maintenance & iteration",
-        body: "A live product to keep alive: fixes, new features, SEO, monitoring.",
+        body: "A product already online that has to keep running: fixes, new features, SEO, monitoring.",
         price: "monthly retainer",
       },
     ],
@@ -331,7 +334,7 @@ export const COPY: Record<Lang, Copy> = {
       {
         n: "2",
         title: "We build",
-        body: "Delivered in slices. You see the product running every week, not only at the end.",
+        body: "I ship in slices. You see the product running every week, not only at the end.",
       },
       {
         n: "3",
@@ -340,16 +343,16 @@ export const COPY: Record<Lang, Copy> = {
       },
     ],
     worksNote:
-      "The problem, what I built, what it changed: details and screenshots on request.",
+      "On request I'll walk through any of them: where it started, what I built, and how it ran once it went live. Screenshots included.",
     aboutBody:
-      "I know the rules of the game: standings, pairings, decks, collections, limited editions. That is what changes everything when you have to build the platform around them. Few projects at a time, one person to talk to, and code your team can pick up.",
+      "I know the rules of the game: standings, pairings, decks, collections, limited editions. You won't have to explain to me why Swiss pairings aren't single elimination. I take few projects at a time, you only ever talk to one person, and the code stays readable for whoever picks it up next.",
     contactLine: "Tell me what you want to build.",
     contactNote:
-      "Reply within one business day. A first 30-minute call, no strings.",
+      "I reply within one business day. The first call is 30 minutes and commits you to nothing.",
     cvLink: "Download résumé",
     nfMetaTitle: "Page not found — Ethan Huot",
     nfLabel: "Error 404",
-    nfTitle: "This page does not exist.",
+    nfTitle: "This page doesn't exist.",
     nfBody: "The link may be out of date, or the address has a typo.",
     nfHome: "Back to home",
     nfOther: "Version française",
