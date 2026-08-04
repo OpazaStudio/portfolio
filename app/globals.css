@@ -1,0 +1,249 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ *
+ * Jetons de design
+ *
+ * Palette et animations reprises telles quelles du design source
+ * (`Portfolio Ethan Huot.dc.html`). Les valeurs hexadécimales sont
+ * identiques à l'original, les noms sont sémantiques.
+ * ------------------------------------------------------------------ */
+
+@theme {
+  --color-parchment: #f6f0d7; /* fond général, texte sur fond sombre */
+  --color-ink: #23271d; /* texte principal */
+  --color-marker: #c5d89d; /* surligneur, accents sur fond sombre */
+  --color-moss: #89986d; /* vert médian : liens survolés, pastilles */
+  --color-olive: #657143; /* étiquettes de section */
+  --color-muted: #6b7159; /* mono secondaire */
+  --color-body: #4a5040; /* corps de texte */
+  --color-stroke: #9cab84; /* contour des pictogrammes */
+  --color-card: #fbf8e9; /* fond des cartes */
+  --color-card-hover: #fffdf2; /* fond des cartes au survol */
+  --color-deep: #3a422e; /* blocs vert foncé (porte B, contact) */
+  --color-band: #4e5a3c; /* bandeau « plateformes livrées » */
+
+  --animate-line-up: om-line-up 0.95s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-fade-up: om-fade-up 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-grow: om-grow 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-roll: om-roll 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-dot: om-dot 2.4s ease-in-out infinite;
+}
+
+@theme inline {
+  --font-serif: var(--font-eb-garamond), Georgia, serif;
+  --font-mono: var(--font-jetbrains-mono), monospace;
+}
+
+/* Déclarées hors de `@theme` : `om-marker` est appelée directement depuis une
+   classe et non via une utilitaire `animate-*`. */
+@keyframes om-line-up {
+  from {
+    transform: translateY(108%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes om-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes om-marker {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes om-dot {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0.45;
+  }
+}
+
+@keyframes om-grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes om-roll {
+  from {
+    transform: rotate(-24deg) scale(0.7);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@layer base {
+  html {
+    background: var(--color-parchment);
+  }
+
+  body {
+    background: var(--color-parchment);
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: var(--color-marker);
+    color: var(--color-ink);
+  }
+
+  a {
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--color-moss);
+  }
+
+  /* Le design n'emploie que la graisse 400 pour les titres. */
+  h1,
+  h2,
+  h3 {
+    font-weight: 400;
+  }
+}
+
+@layer components {
+  /* Lien de navigation : le filet se déploie depuis la gauche au survol.
+     (Le design déclarait le `::after` sans jamais le déclencher ; l'intention
+     est rétablie ici sur `:hover` et `:focus-visible`.) */
+  .nav-link {
+    position: relative;
+    color: var(--color-muted);
+    transition: color 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 100%;
+    height: 1px;
+    background: var(--color-moss);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .nav-link:hover {
+    color: var(--color-ink);
+  }
+
+  .nav-link:hover::after,
+  .nav-link:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  /* Surligneur peint SOUS le fragment de titre : `z-index` négatif sur le
+     pseudo-élément, contexte d'empilement créé par `z-index: 0` sur le parent. */
+  .hero-mark {
+    position: relative;
+    z-index: 0;
+    white-space: nowrap;
+  }
+
+  .hero-mark::before {
+    content: "";
+    position: absolute;
+    left: -4px;
+    right: -4px;
+    bottom: 0.1em;
+    height: 0.42em;
+    background: var(--color-marker);
+    z-index: -1;
+    transform-origin: left;
+    animation: om-marker 0.8s 1.05s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+
+  /* Carte « papier » : bord extérieur + liseré intérieur à 5px.
+     `--paper-line` permet d'ajuster le liseré carte par carte. */
+  .paper-card {
+    --paper-line: rgb(35 39 29 / 0.12);
+    position: relative;
+    border-radius: 4px;
+    /* `translate` et `rotate` sont des propriétés distinctes de `transform` :
+       elles doivent être listées explicitement pour être animées. */
+    transition:
+      translate 0.32s cubic-bezier(0.2, 0.8, 0.2, 1),
+      rotate 0.32s cubic-bezier(0.2, 0.8, 0.2, 1),
+      transform 0.32s cubic-bezier(0.2, 0.8, 0.2, 1),
+      box-shadow 0.32s,
+      background-color 0.32s;
+  }
+
+  .paper-card::before {
+    content: "";
+    position: absolute;
+    inset: 5px;
+    border: 1px solid var(--paper-line);
+    border-radius: 2px;
+    pointer-events: none;
+  }
+
+  /* Boutons du hero : léger soulèvement au survol. */
+  .cta {
+    display: inline-block;
+    transition:
+      background-color 0.25s,
+      border-color 0.25s,
+      color 0.25s,
+      translate 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+      transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  /* Trame croisée du bloc contact. */
+  .hatched {
+    background-image:
+      repeating-linear-gradient(
+        45deg,
+        rgb(197 216 157 / 0.07) 0 1px,
+        transparent 1px 15px
+      ),
+      repeating-linear-gradient(
+        -45deg,
+        rgb(197 216 157 / 0.07) 0 1px,
+        transparent 1px 15px
+      );
+  }
+}
+
+/* Aucune animation pour qui a demandé à ne pas en avoir. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
