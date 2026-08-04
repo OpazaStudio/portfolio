@@ -3,18 +3,18 @@
 /* ------------------------------------------------------------------ *
  * Jetons de design
  *
- * Palette et animations reprises telles quelles du design source
- * (`Portfolio Ethan Huot.dc.html`). Les valeurs hexadécimales sont
- * identiques à l'original, les noms sont sémantiques.
+ * Palette reprise du design source (`Portfolio Ethan Huot.dc.html`),
+ * avec deux corrections de contraste (voir `--color-muted` et
+ * `--color-link-hover`) et une échelle de traits qui n'existait pas.
  * ------------------------------------------------------------------ */
 
 @theme {
   --color-parchment: #f6f0d7; /* fond général, texte sur fond sombre */
   --color-ink: #23271d; /* texte principal */
   --color-marker: #c5d89d; /* surligneur, accents sur fond sombre */
-  --color-moss: #89986d; /* vert médian : liens survolés, pastilles */
-  --color-olive: #657143; /* étiquettes de section */
-  --color-muted: #6b7159; /* mono secondaire */
+  --color-moss: #89986d; /* vert médian : aplats et pastilles uniquement */
+  --color-olive: #657143; /* étiquettes de section, survol des liens */
+  --color-muted: #666c55; /* mono secondaire — 4,78:1 sur parchemin */
   --color-body: #4a5040; /* corps de texte */
   --color-stroke: #9cab84; /* contour des pictogrammes */
   --color-card: #fbf8e9; /* fond des cartes */
@@ -22,11 +22,36 @@
   --color-deep: #3a422e; /* blocs vert foncé (porte B, contact) */
   --color-band: #4e5a3c; /* bandeau « plateformes livrées » */
 
+  /* `moss` ne passe pas AA en texte (2,71:1 sur parchemin) : il reste
+     réservé aux aplats. Le survol des liens emprunte `olive` (4,60:1). */
+  --color-link-hover: var(--color-olive);
+
   --animate-line-up: om-line-up 0.95s cubic-bezier(0.16, 1, 0.3, 1) both;
   --animate-fade-up: om-fade-up 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
   --animate-grow: om-grow 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
   --animate-roll: om-roll 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
   --animate-dot: om-dot 2.4s ease-in-out infinite;
+}
+
+/* ------------------------------------------------------------------ *
+ * Traits, ombres et repères
+ *
+ * Le design source inventait une opacité par endroit (quatorze valeurs
+ * distinctes). Trois niveaux suffisent, plus un niveau « contrôle » qui
+ * atteint les 3:1 exigés par WCAG 1.4.11 pour délimiter un bouton.
+ * ------------------------------------------------------------------ */
+@theme {
+  --color-line-soft: rgb(35 39 29 / 0.1); /* liseré intérieur des cartes */
+  --color-line: rgb(35 39 29 / 0.16); /* filets de séparation */
+  --color-line-strong: rgb(35 39 29 / 0.24); /* contour des cartes */
+  --color-line-control: rgb(35 39 29 / 0.55); /* contour d'un bouton — 3,2:1 */
+
+  /* Mêmes niveaux, posés sur les blocs vert foncé. */
+  --color-line-soft-invert: rgb(246 240 215 / 0.22);
+  --color-line-invert: rgb(246 240 215 / 0.24);
+  --color-line-strong-invert: rgb(246 240 215 / 0.4);
+
+  --shadow-lift: 0 18px 34px -20px rgb(35 39 29 / 0.45);
 }
 
 @theme inline {
@@ -100,13 +125,15 @@
 @layer base {
   html {
     background: var(--color-parchment);
+    /* Le monde est volontairement clair et unique : on l'assume pour que les
+       ascenseurs et contrôles natifs ne basculent pas en sombre. */
+    color-scheme: light;
   }
 
   body {
     background: var(--color-parchment);
     color: var(--color-ink);
     font-family: var(--font-serif);
-    overflow-x: hidden;
   }
 
   ::selection {
@@ -120,7 +147,7 @@
   }
 
   a:hover {
-    color: var(--color-moss);
+    color: var(--color-link-hover);
   }
 
   /* Le design n'emploie que la graisse 400 pour les titres. */
@@ -128,6 +155,26 @@
   h2,
   h3 {
     font-weight: 400;
+  }
+
+  /* L'en-tête est collant sur 66 px à partir de `md` : sans cette réserve,
+     un élément amené en haut du scrollport — saut d'ancre, `Maj+Tab`,
+     recherche dans la page — passe dessous. WCAG 2.4.11. */
+  :target,
+  :focus-visible {
+    scroll-margin-top: 5.5rem;
+  }
+
+  /* Un anneau dessiné dans la palette plutôt que le bleu du navigateur. */
+  :focus-visible {
+    outline: 2px solid var(--color-deep);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+
+  /* Sur les blocs vert foncé, l'encre n'a plus assez de contraste. */
+  .on-deep :focus-visible {
+    outline-color: var(--color-marker);
   }
 }
 
@@ -137,6 +184,10 @@
      est rétablie ici sur `:hover` et `:focus-visible`.) */
   .nav-link {
     position: relative;
+    display: inline-block;
+    /* Le texte fait 18 px de haut : sans réserve verticale, la zone tactile
+       tombe sous les 24 px recommandés. Le filet reste à 4 px du texte. */
+    padding-block: 9px;
     color: var(--color-muted);
     transition: color 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
@@ -145,10 +196,10 @@
     content: "";
     position: absolute;
     left: 0;
-    bottom: -4px;
+    bottom: 5px;
     width: 100%;
     height: 1px;
-    background: var(--color-moss);
+    background: var(--color-olive);
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -187,7 +238,7 @@
   /* Carte « papier » : bord extérieur + liseré intérieur à 5px.
      `--paper-line` permet d'ajuster le liseré carte par carte. */
   .paper-card {
-    --paper-line: rgb(35 39 29 / 0.12);
+    --paper-line: var(--color-line-soft);
     position: relative;
     border-radius: 4px;
     /* `translate` et `rotate` sont des propriétés distinctes de `transform` :
@@ -195,7 +246,6 @@
     transition:
       translate 0.32s cubic-bezier(0.2, 0.8, 0.2, 1),
       rotate 0.32s cubic-bezier(0.2, 0.8, 0.2, 1),
-      transform 0.32s cubic-bezier(0.2, 0.8, 0.2, 1),
       box-shadow 0.32s,
       background-color 0.32s;
   }
@@ -209,6 +259,15 @@
     pointer-events: none;
   }
 
+  /* Une carte cliquable reproduit au clavier le retour qu'elle donne à la
+     souris : sans cela, le soulèvement de 6 px n'existe que pour le pointeur. */
+  .paper-card--link:hover,
+  .paper-card--link:focus-visible {
+    background-color: var(--color-card-hover);
+    translate: 0 -6px;
+    box-shadow: var(--shadow-lift);
+  }
+
   /* Boutons du hero : léger soulèvement au survol. */
   .cta {
     display: inline-block;
@@ -216,8 +275,12 @@
       background-color 0.25s,
       border-color 0.25s,
       color 0.25s,
-      translate 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
-      transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+      translate 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .cta:hover,
+  .cta:focus-visible {
+    translate: 0 -3px;
   }
 
   /* Trame croisée du bloc contact. */
@@ -234,16 +297,90 @@
         transparent 1px 15px
       );
   }
+
+  /* ---------------------------------------------------------------- *
+   * Révélation au défilement
+   *
+   * L'état masqué est posé en CSS par la classe `reveal-armed`, écrite sur
+   * `<html>` par un script inline avant la première peinture (voir
+   * `components/reveal.tsx`). Sans JavaScript, la classe n'existe pas et
+   * rien n'est masqué.
+   * ---------------------------------------------------------------- */
+  .reveal-armed [data-reveal] {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) var(--reveal-delay, 0ms),
+      transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) var(--reveal-delay, 0ms);
+  }
+
+  .reveal-armed [data-reveal][data-revealed] {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* À l'impression, rien ne défile : sans cette règle, tout ce que le lecteur
+     n'a pas encore parcouru sort blanc du PDF. C'est le cas d'usage d'un
+     recruteur qui enregistre la page. */
+  @media print {
+    .reveal-armed [data-reveal] {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+
+  /* Lien d'évitement : hors écran jusqu'à ce qu'il reçoive le focus. */
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+    z-index: 50;
+    translate: 0 -200%;
+    background: var(--color-ink);
+    color: var(--color-parchment);
+    transition: translate 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .skip-link:focus-visible {
+    translate: 0 0;
+  }
 }
 
-/* Aucune animation pour qui a demandé à ne pas en avoir. */
+/* ------------------------------------------------------------------ *
+ * Mouvement réduit
+ *
+ * On coupe les entrées de parcours — révélations, montée des lignes de
+ * titre, pulsation de la pastille — et on garde les transitions courtes de
+ * couleur et d'opacité : ce sont des retours d'état, pas du mouvement, et
+ * les supprimer rend l'interface moins lisible, pas plus confortable.
+ * ------------------------------------------------------------------ */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+  }
+
+  /* Les déplacements restent supprimés, les changements de couleur non. */
+  .paper-card,
+  .paper-card--link,
+  .cta,
+  .skip-link {
+    transition-property: background-color, border-color, color, box-shadow !important;
+  }
+
+  .paper-card--link:hover,
+  .paper-card--link:focus-visible,
+  .cta:hover,
+  .cta:focus-visible {
+    translate: none;
+    rotate: none;
+  }
+
+  html {
+    scroll-behavior: auto;
   }
 }

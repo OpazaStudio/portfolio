@@ -1,11 +1,14 @@
+import Link from "next/link";
+
+import { Container } from "@/components/container";
 import { LeafMark } from "@/components/icons";
 import { cn } from "@/lib/cn";
-import type { Copy, Lang } from "@/lib/copy";
+import { COPY, type Copy, type Lang } from "@/lib/copy";
+import { PATH } from "@/lib/metadata";
 
 type SiteHeaderProps = {
   t: Copy;
   lang: Lang;
-  onLangChange: (lang: Lang) => void;
 };
 
 const NAV = [
@@ -15,69 +18,77 @@ const NAV = [
   { href: "#contact", key: "nav4" },
 ] as const;
 
-export function SiteHeader({ t, lang, onLangChange }: SiteHeaderProps) {
+const LANGS: Lang[] = ["fr", "en"];
+
+/**
+ * En-tête.
+ *
+ * Le design source laissait `flex-wrap` gérer seul le mobile : à 375 px la
+ * barre s'étalait sur quatre lignes et 210 px de haut, soit un quart du
+ * premier écran. Elle tient maintenant sur deux lignes courtes — identité et
+ * langue d'abord, ancres de section ensuite — et redevient une ligne unique
+ * à partir de `md`, où elle est collante.
+ *
+ * Le sélecteur de langue est une paire de liens et non deux boutons : chaque
+ * langue a désormais son URL (`/` et `/en`), donc elle se partage, s'indexe
+ * et survit à un rechargement.
+ */
+export function SiteHeader({ t, lang }: SiteHeaderProps) {
   return (
-    // Le design source n'a aucun point de rupture : en dessous de ~700 px la
-    // barre passe sur trois lignes (≈ 165 px). Collante, elle mangerait un
-    // cinquième de l'écran d'un téléphone — elle défile donc jusqu'à `md`.
-    <header className="bg-parchment/90 border-ink/14 z-20 border-b backdrop-blur-[10px] md:sticky md:top-0">
-      <div className="mx-auto flex max-w-[1180px] flex-wrap items-center gap-8 px-10 py-[15px]">
-        <a
-          href="#top"
-          className="flex items-center gap-[10px] font-mono text-[12px] font-medium tracking-[0.08em] uppercase"
+    <header className="bg-parchment/90 border-line z-20 border-b backdrop-blur-[10px] md:sticky md:top-0">
+      <Container className="flex flex-wrap items-center gap-x-8 gap-y-1 py-2 md:py-[6px]">
+        <Link
+          href={PATH[lang]}
+          className="order-1 flex items-center gap-[10px] py-2 font-mono text-[0.75rem] font-medium tracking-[0.08em] uppercase"
         >
           <LeafMark />
           Ethan Huot
-        </a>
+        </Link>
 
-        <nav className="ml-auto flex flex-wrap gap-[26px]">
+        <nav
+          aria-label={t.navLabel}
+          // Les quatre ancres tiennent sur une seule ligne jusqu'à 320 px à
+          // 16 px d'écart ; l'écart du design revient dès `sm`.
+          className="order-3 flex w-full flex-wrap gap-x-4 pb-1 sm:gap-x-[26px] md:order-2 md:ml-auto md:w-auto md:pb-0"
+        >
           {NAV.map(({ href, key }) => (
             <a
               key={href}
               href={href}
-              className="nav-link font-mono text-[12px] tracking-[0.06em]"
+              className="nav-link font-mono text-[0.75rem] tracking-[0.06em]"
             >
               {t[key]}
             </a>
           ))}
         </nav>
 
-        <div className="border-ink/16 flex items-center gap-[2px] border p-[2px]">
-          <LangButton
-            code="fr"
-            active={lang === "fr"}
-            onSelect={onLangChange}
-          />
-          <LangButton
-            code="en"
-            active={lang === "en"}
-            onSelect={onLangChange}
-          />
+        <div
+          className="border-line-strong order-2 ml-auto flex items-center gap-[2px] border p-[2px] md:order-3 md:ml-0"
+          role="group"
+          aria-label={t.langLabel}
+        >
+          {LANGS.map((code) => (
+            <Link
+              key={code}
+              href={PATH[code]}
+              hrefLang={code}
+              lang={code}
+              aria-current={code === lang ? "page" : undefined}
+              className={cn(
+                "px-[11px] py-[9px] font-mono text-[0.6875rem] tracking-[0.06em] transition-colors duration-200",
+                code === lang
+                  ? "bg-ink text-parchment"
+                  : "text-muted bg-transparent",
+              )}
+            >
+              {code.toUpperCase()}
+              {/* Le nom complet complète l'abréviation à l'oral sans la
+                  remplacer : le nom accessible contient le texte visible. */}
+              <span className="sr-only"> — {COPY[code].langName}</span>
+            </Link>
+          ))}
         </div>
-      </div>
+      </Container>
     </header>
-  );
-}
-
-type LangButtonProps = {
-  code: Lang;
-  active: boolean;
-  onSelect: (lang: Lang) => void;
-};
-
-function LangButton({ code, active, onSelect }: LangButtonProps) {
-  return (
-    <button
-      type="button"
-      lang={code}
-      aria-pressed={active}
-      onClick={() => onSelect(code)}
-      className={cn(
-        "cursor-pointer px-[11px] py-[6px] font-mono text-[11px] tracking-[0.06em] transition-colors duration-200",
-        active ? "bg-ink text-parchment" : "text-muted bg-transparent",
-      )}
-    >
-      {code.toUpperCase()}
-    </button>
   );
 }

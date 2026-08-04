@@ -5,8 +5,8 @@ import { SITE } from "@/lib/site";
 
 export function Services({ t }: { t: Copy }) {
   return (
-    <section className="border-ink/14 mt-[84px] flex flex-wrap gap-12 border-t pt-14 pb-6">
-      <SectionLabel icon={<Glyph dots={1} className="animate-roll" />}>
+    <section className="border-line mt-[84px] flex flex-wrap gap-12 border-t pt-14 pb-6">
+      <SectionLabel id="services" icon={<Glyph dots={1} className="animate-roll" />}>
         {t.s1Label}
       </SectionLabel>
 
@@ -18,17 +18,17 @@ export function Services({ t }: { t: Copy }) {
             className="flex flex-wrap gap-8 pb-10"
           >
             <div className="flex-[1_1_340px]">
-              <h3 className="mb-[10px] text-[30px] leading-[1.15] font-normal tracking-[-0.01em]">
+              <h3 className="mb-[10px] text-[1.875rem] leading-[1.15] font-normal tracking-[-0.01em]">
                 {service.title}
               </h3>
-              <p className="text-body max-w-[520px] text-[19px] leading-[1.55] text-pretty">
+              <p className="text-body max-w-[520px] text-[1.1875rem] leading-[1.55] text-pretty">
                 {service.body}
               </p>
             </div>
 
             {SITE.showPricing && (
               <div className="flex-[0_0_150px] pt-2">
-                <span className="bg-marker text-ink inline-block px-[9px] py-[5px] font-mono text-[12px] leading-[1.6]">
+                <span className="bg-marker text-ink inline-block px-[9px] py-[5px] font-mono text-[0.75rem] leading-[1.6]">
                   {service.price}
                 </span>
               </div>

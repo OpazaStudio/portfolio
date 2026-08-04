@@ -17,10 +17,23 @@ export type Project = {
   status: string;
   body: string;
   tags: string;
+  /**
+   * Page de détail ou site en ligne. Tant qu'elle est absente, la carte est
+   * rendue en `<article>` : ni flèche, ni soulèvement, ni curseur de lien —
+   * l'affordance ne promet pas une destination qui n'existe pas.
+   */
+  url?: string;
 };
 export type MethodStep = { n: string; title: string; body: string };
 
 export type Copy = {
+  /** Nom de la langue dans sa propre langue, pour le sélecteur. */
+  langName: string;
+  metaTitle: string;
+  metaDescription: string;
+  skipLink: string;
+  navLabel: string;
+  langLabel: string;
   nav1: string;
   nav2: string;
   nav3: string;
@@ -47,6 +60,9 @@ export type Copy = {
   doorBTitle: string;
   doorBBody: string;
   doorBLink: string;
+  /** Repli quand `SITE.cvHref` est absent : la porte garde un appel à l'action. */
+  doorBLinkAlt: string;
+  doorBSubject: string;
   s1Label: string;
   s2Label: string;
   s3Label: string;
@@ -60,10 +76,26 @@ export type Copy = {
   contactLine: string;
   contactNote: string;
   cvLink: string;
+  /** Page 404. */
+  nfMetaTitle: string;
+  nfLabel: string;
+  nfTitle: string;
+  nfBody: string;
+  nfHome: string;
+  /** Lien vers l'autre langue, écrit dans cette autre langue. */
+  nfOther: string;
 };
 
 export const COPY: Record<Lang, Copy> = {
   fr: {
+    langName: "Français",
+    metaTitle:
+      "Ethan Huot — Plateformes pour jeux de société et jeux de cartes",
+    metaDescription:
+      "Développeur full-stack indépendant, basé à La Rochelle. Tournois, boutiques, back-offices, applications mobiles — du premier écran à la mise en production.",
+    skipLink: "Aller au contenu",
+    navLabel: "Navigation principale",
+    langLabel: "Langue du site",
     nav1: "Services",
     nav2: "Travaux",
     nav3: "Méthode",
@@ -98,6 +130,8 @@ export const COPY: Record<Lang, Copy> = {
     doorBBody:
       "Je suis aussi ouvert à un CDI full-stack ou mobile, en France ou à distance.",
     doorBLink: "Voir mon CV",
+    doorBLinkAlt: "Écrivez-moi",
+    doorBSubject: "Opportunité de poste",
     s1Label: "Services",
     s2Label: "Travaux",
     s3Label: "Méthode",
@@ -171,16 +205,31 @@ export const COPY: Record<Lang, Copy> = {
         body: "Code documenté, déploiement automatisé. Vous restez autonome, avec ou sans moi.",
       },
     ],
+    // Le design source annonçait « Chaque projet mène à une page détaillée » ;
+    // ces pages n'existent pas. La promesse est ramenée à ce qui est vrai.
     worksNote:
-      "Chaque projet mène à une page détaillée : le problème, ce que j'ai construit, ce que ça a changé.",
+      "Le problème, ce que j'ai construit, ce que ça a changé : détails et captures d'écran sur demande.",
     aboutBody:
       "Je connais les règles du jeu : classements, appariements, decks, collections, éditions limitées. C'est ce qui change tout quand il faut construire la plateforme qui va autour. Peu de projets à la fois, une seule personne à qui parler, et du code que votre équipe pourra reprendre.",
     contactLine: "Dites-moi ce que vous voulez construire.",
     contactNote:
       "Réponse sous 24 h ouvrées. Un premier appel de 30 minutes, sans engagement.",
     cvLink: "Télécharger le CV",
+    nfMetaTitle: "Page introuvable — Ethan Huot",
+    nfLabel: "Erreur 404",
+    nfTitle: "Cette page n’existe pas.",
+    nfBody: "Le lien est peut-être ancien, ou l’adresse comporte une faute.",
+    nfHome: "Retour à l’accueil",
+    nfOther: "English version",
   },
   en: {
+    langName: "English",
+    metaTitle: "Ethan Huot — Platforms for board games and trading card games",
+    metaDescription:
+      "Independent full-stack developer, based in La Rochelle, France. Tournaments, shops, back-offices, mobile apps — from the first screen to production.",
+    skipLink: "Skip to content",
+    navLabel: "Main navigation",
+    langLabel: "Site language",
     nav1: "Services",
     nav2: "Work",
     nav3: "Method",
@@ -215,6 +264,8 @@ export const COPY: Record<Lang, Copy> = {
     doorBBody:
       "I am also open to a full-time full-stack or mobile role, in France or remote.",
     doorBLink: "See my résumé",
+    doorBLinkAlt: "Get in touch",
+    doorBSubject: "Role opportunity",
     s1Label: "Services",
     s2Label: "Work",
     s3Label: "Method",
@@ -289,13 +340,19 @@ export const COPY: Record<Lang, Copy> = {
       },
     ],
     worksNote:
-      "Each project opens a detailed page: the problem, what I built, what it changed.",
+      "The problem, what I built, what it changed: details and screenshots on request.",
     aboutBody:
       "I know the rules of the game: standings, pairings, decks, collections, limited editions. That is what changes everything when you have to build the platform around them. Few projects at a time, one person to talk to, and code your team can pick up.",
     contactLine: "Tell me what you want to build.",
     contactNote:
       "Reply within one business day. A first 30-minute call, no strings.",
     cvLink: "Download résumé",
+    nfMetaTitle: "Page not found — Ethan Huot",
+    nfLabel: "Error 404",
+    nfTitle: "This page does not exist.",
+    nfBody: "The link may be out of date, or the address has a typo.",
+    nfHome: "Back to home",
+    nfOther: "Version française",
   },
 };
 
